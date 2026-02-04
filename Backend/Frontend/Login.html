@@ -1,24 +1,64 @@
-<template>
-    <div class="d-flex align-items-center justify-content-center" style="min-height:75vh;">
-        <div class="card p-4" style="width:380px;">
-            <h3 class="mb-3">HR Portal — Login</h3>
-            <form @submit.prevent="onSubmit" novalidate>
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input v-model="username" type="text" class="form-control" required />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input v-model="password" type="password" class="form-control" required />
-                </div>
-                <div v-if="error" class="alert alert-danger py-1">{{ error }}</div>
-                    <button class="btn btn-primary w-100" :disabled="loading">{{ loading ? 'Signing in...' : 'Sign in' }}</button>
-            </form>
-            <p class="text-muted small mt-2">Demo: <strong>hradmin / Password123</strong></p>
-        </div>
-    </div>
-</template>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Login Page</title>
+</head>
+<body>
+    <div id="Login">
+    <div class="d-flex align-items-center justify-content-center" style="min-height:75vh;">
+        <div class="card p-4" style="width:380px;">
+            <h3 class="mb-3">HR Portal — Login</h3>
+            <form @submit.prevent="onSubmit" novalidate>
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input v-model="username" type="text" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input v-model="password" type="password" class="form-control" required />
+                </div>
+                <div v-if="error" class="alert alert-danger py-1">{{ error }}</div>
+                    <button class="btn btn-primary w-100" :disabled="loading">{{ loading ? 'Signing in...' : 'Sign in' }}</button>
+            </form>
+            <p class="text-muted small mt-2">Demo: <strong>hradmin / Password123</strong></p>
+        </div>
+    </div>
+  </div>
 
-<script>
-    
-</script>
+  <script>
+    const { createApp } = Vue
+
+    createApp({
+      data() {
+        return {
+          username: "",
+          password: "",
+          loading: false,
+          error: null
+        }
+      },
+      methods: {
+        async onSubmit() {
+          this.error = null
+          this.loading = true
+
+          try {
+            // Demo login check (replace with fetch to PHP later)
+            if (this.username === "hradmin" && this.password === "Password123") {
+              alert("Login successful!")
+              // window.location.href = "dashboard.php" // optional later
+            } else {
+              this.error = "Invalid username or password."
+            }
+          } finally {
+            this.loading = false
+          }
+        }
+      }
+    }).mount("#Login")
+  </script>
+</body>
+</html>
