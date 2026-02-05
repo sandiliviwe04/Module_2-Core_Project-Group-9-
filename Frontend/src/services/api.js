@@ -1,11 +1,7 @@
 import axios from 'axios'
 
-// Base URL for your backend API
-// Update this to match your server setup
 const API_BASE_URL = 'http://localhost/m2-core-project-g9/Backend/api'
-// Alternative for PHP built-in server: 'http://localhost:8000'
 
-// Create axios instance with default config
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -13,7 +9,6 @@ const apiClient = axios.create({
   },
 })
 
-// Add token to requests if available
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('auth_token')
@@ -27,12 +22,10 @@ apiClient.interceptors.request.use(
   }
 )
 
-// Handle response errors
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid - clear auth and redirect to login
       localStorage.removeItem('auth_token')
       localStorage.removeItem('user')
       window.location.href = '/'
@@ -41,9 +34,7 @@ apiClient.interceptors.response.use(
   }
 )
 
-// API Service
 export default {
-  // Authentication
   async login(username, password) {
     const response = await apiClient.post('/Auth/Login.php', {
       username,
@@ -52,7 +43,6 @@ export default {
     return response.data
   },
 
-  // Employees
   async getEmployees() {
     const response = await apiClient.get('/Employees/')
     return response.data
@@ -78,7 +68,6 @@ export default {
     return response.data
   },
 
-  // Payroll
   async getPayroll(employeeId = null) {
     const url = employeeId ? `/Payroll/?employee_id=${employeeId}` : '/Payroll/'
     const response = await apiClient.get(url)
@@ -95,7 +84,6 @@ export default {
     return response.data
   },
 
-  // Attendance
   async getAttendance(employeeId = null) {
     const url = employeeId ? `/Attendance/?employee_id=${employeeId}` : '/Attendance/'
     const response = await apiClient.get(url)
@@ -111,8 +99,6 @@ export default {
     const response = await apiClient.put('/Attendance/', attendanceData)
     return response.data
   },
-
-  // Leave Requests
   async getLeaveRequests(employeeId = null) {
     const url = employeeId ? `/LeaveRequests/?employee_id=${employeeId}` : '/LeaveRequests/'
     const response = await apiClient.get(url)
@@ -129,7 +115,6 @@ export default {
     return response.data
   },
 
-  // Test endpoint
   async testConnection() {
     const response = await apiClient.get('/test.php')
     return response.data

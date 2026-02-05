@@ -9,15 +9,15 @@
           </div>
           <p class="subtitle">Human Resources Management System</p>
         </div>
-        
+
         <div class="login-card">
           <h2>Welcome Back</h2>
           <div class="input-group">
             <label for="username">Username</label>
-            <input 
-              v-model="username" 
+            <input
+              v-model="username"
               id="username"
-              type="text" 
+              type="text"
               placeholder="Enter your username"
               class="form-input"
               @keyup.enter="login"
@@ -25,17 +25,14 @@
           </div>
           <div class="input-group">
             <label for="password">Password</label>
-            <input 
-              v-model="password" 
+            <input
+              v-model="password"
               id="password"
-              type="password" 
+              type="password"
               placeholder="Enter your password"
               class="form-input"
               @keyup.enter="login"
             >
-          </div>
-          <div v-if="errorMessage" class="error-message">
-            {{ errorMessage }}
           </div>
           <button @click="login" class="btn-login" :disabled="loading">
             <span v-if="loading" class="spinner"></span>
@@ -46,7 +43,7 @@
             <p><strong>Admin</strong> / <strong>password123</strong></p>
           </div>
         </div>
-        
+
         <div class="login-footer">
           <p>© 2025 ModernTech HR. All rights reserved.</p>
         </div>
@@ -60,18 +57,18 @@
             <i class="bi bi-building"></i>
             <h3 v-if="isSidebarOpen">ModernTech HR</h3>
           </div>
-          <button 
-            @click="toggleSidebar" 
+          <button
+            @click="toggleSidebar"
             class="toggle-btn"
             :aria-label="isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'"
           >
             <i class="bi" :class="isSidebarOpen ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
           </button>
         </div>
-        
+
         <nav class="sidebar-nav">
-          <router-link 
-            to="/dashboard" 
+          <router-link
+            to="/dashboard"
             class="nav-item"
             :class="{ 'active': $route.path === '/dashboard' }"
             @click="closeMobileSidebar"
@@ -79,9 +76,9 @@
             <i class="bi bi-speedometer2"></i>
             <span v-if="isSidebarOpen">Dashboard</span>
           </router-link>
-          
-          <router-link 
-            to="/employees" 
+
+          <router-link
+            to="/employees"
             class="nav-item"
             :class="{ 'active': $route.path === '/employees' }"
             @click="closeMobileSidebar"
@@ -89,9 +86,9 @@
             <i class="bi bi-people-fill"></i>
             <span v-if="isSidebarOpen">Employees</span>
           </router-link>
-          
-          <router-link 
-            to="/payroll" 
+
+          <router-link
+            to="/payroll"
             class="nav-item"
             :class="{ 'active': $route.path === '/payroll' }"
             @click="closeMobileSidebar"
@@ -99,9 +96,9 @@
             <i class="bi bi-cash-stack"></i>
             <span v-if="isSidebarOpen">Payroll</span>
           </router-link>
-          
-          <router-link 
-            to="/timeoff" 
+
+          <router-link
+            to="/timeoff"
             class="nav-item"
             :class="{ 'active': $route.path === '/timeoff' }"
             @click="closeMobileSidebar"
@@ -110,15 +107,15 @@
             <span v-if="isSidebarOpen">Time Off</span>
           </router-link>
         </nav>
-        
+
         <div class="sidebar-footer">
           <div class="user-info" v-if="isSidebarOpen">
             <div class="avatar">
               <i class="bi bi-person-circle"></i>
             </div>
             <div class="user-details">
-              <strong>{{ currentUser?.username || 'Admin User' }}</strong>
-              <small>{{ currentUser?.role || 'System Administrator' }}</small>
+              <strong>Admin User</strong>
+              <small>System Administrator</small>
             </div>
           </div>
           <button @click="logout" class="btn-logout">
@@ -140,7 +137,7 @@
           <div class="topbar-actions">
           </div>
         </header>
-        
+
         <div class="content-wrapper">
           <router-view></router-view>
         </div>
@@ -160,72 +157,66 @@ export default {
     const router = useRouter()
     const hrStore = useHRStore()
     
-    const isLoggedIn = ref(hrStore.isAuthenticated)
+    // Auth state from store
+    const isLoggedIn = computed(() => hrStore.isAuthenticated)
     const username = ref('')
     const password = ref('')
     const loading = ref(false)
-    const errorMessage = ref('')
     const isSidebarOpen = ref(true)
-    
+
     const routes = {
       '/dashboard': 'Dashboard',
       '/employees': 'Employee Management',
       '/payroll': 'Payroll & Attendance',
       '/timeoff': 'Time Off Management'
     }
-    
+
     const currentTitle = computed(() => {
       return routes[router.currentRoute.value.path] || 'Dashboard'
     })
-    
-    const currentUser = computed(() => hrStore.user)
-    
+
     const login = async () => {
       if (!username.value || !password.value) {
-        errorMessage.value = 'Please enter both username and password'
+        alert('Please enter both username and password')
         return
       }
-      
+
       loading.value = true
-      errorMessage.value = ''
-      
+
       try {
         const success = await hrStore.login(username.value, password.value)
-        
         if (success) {
-          isLoggedIn.value = true
           username.value = ''
           password.value = ''
           router.push('/dashboard')
         } else {
-          errorMessage.value = 'Invalid credentials. Please try again.'
+          alert('Invalid credentials. Use: Admin / password123')
         }
       } catch (error) {
         console.error('Login error:', error)
-        errorMessage.value = 'Login failed. Please check that the backend server is running.'
+        alert('An error occurred during login. Please ensure the backend is running.')
+      } finally {
+        loading.value = false
       }
-      
-      loading.value = false
     }
-    
+
     const logout = () => {
       if (confirm('Are you sure you want to logout?')) {
         hrStore.logout()
-        isLoggedIn.value = false
         router.push('/')
       }
     }
-    
+
     const toggleSidebar = () => {
       isSidebarOpen.value = !isSidebarOpen.value
     }
-    
+
     const closeMobileSidebar = () => {
       if (window.innerWidth < 768) {
         isSidebarOpen.value = false
       }
     }
-    
+
     const getBreadcrumb = () => {
       const path = router.currentRoute.value.path
       if (path === '/dashboard') return 'Overview & Analytics'
@@ -234,7 +225,7 @@ export default {
       if (path === '/timeoff') return 'Leave requests & approvals'
       return ''
     }
-    
+
     const handleResize = () => {
       if (window.innerWidth < 768) {
         isSidebarOpen.value = false
@@ -242,30 +233,28 @@ export default {
         isSidebarOpen.value = true
       }
     }
-    
+
     onMounted(() => {
       handleResize()
       window.addEventListener('resize', handleResize)
       
-      // Check if user is already logged in
-      if (hrStore.isAuthenticated) {
-        isLoggedIn.value = true
+      // Check if already authenticated (done by store init, but could check again)
+      if (hrStore.isAuthenticated && router.currentRoute.value.path === '/') {
+        router.push('/dashboard')
       }
     })
-    
+
     onUnmounted(() => {
       window.removeEventListener('resize', handleResize)
     })
-    
+
     return {
       isLoggedIn,
       username,
       password,
       loading,
-      errorMessage,
       isSidebarOpen,
       currentTitle,
-      currentUser,
       login,
       logout,
       toggleSidebar,
@@ -406,17 +395,6 @@ body {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(177, 156, 217, 0.2);
-}
-
-.error-message {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background: rgba(244, 67, 54, 0.1);
-  border: 1px solid rgba(244, 67, 54, 0.3);
-  border-radius: 8px;
-  color: var(--danger);
-  font-size: 0.9rem;
-  text-align: center;
 }
 
 .btn-login {
@@ -710,6 +688,36 @@ body {
   gap: 1rem;
 }
 
+.notification-badge {
+  position: relative;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.notification-badge:hover {
+  background: rgba(177, 156, 217, 0.1);
+}
+
+.notification-badge i {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--danger);
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
 .content-wrapper {
   flex: 1;
   padding: 1.5rem;
@@ -748,11 +756,11 @@ body {
   .sidebar {
     width: 240px;
   }
-  
+
   .main-content {
     margin-left: 240px;
   }
-  
+
   .main-content.expanded {
     margin-left: 70px;
   }
@@ -763,23 +771,23 @@ body {
     transform: translateX(-100%);
     box-shadow: 5px 0 30px rgba(0, 0, 0, 0.3);
   }
-  
+
   .sidebar:not(.sidebar-collapsed) {
     transform: translateX(0);
   }
-  
+
   .main-content {
     margin-left: 0 !important;
   }
-  
+
   .menu-toggle {
     display: block;
   }
-  
+
   .login-card {
     padding: 2rem;
   }
-  
+
   .content-wrapper {
     padding: 1rem;
   }
@@ -789,15 +797,15 @@ body {
   .login-card {
     padding: 1.5rem;
   }
-  
+
   .logo h1 {
     font-size: 2rem;
   }
-  
+
   .logo i {
     font-size: 2.5rem;
   }
-  
+
   .topbar-title h2 {
     font-size: 1.25rem;
   }
