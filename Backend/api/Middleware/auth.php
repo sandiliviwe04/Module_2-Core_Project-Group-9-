@@ -1,30 +1,48 @@
 <?php
-require_once '../config/jwt.php';
+require_once '../Config/cors.php';
+require_once '../Config/database.php';
+require_once '../Config/jwt.php';
 
-function authenticate() {
+header("Content-Type: application/json");
+
+// Verify JWT token from Authorization header
+function verifyToken()
+{
     $headers = getallheaders();
-    $token = null;
-    
-    if (isset($headers['Authorization'])) {
-        $matches = [];
-        if (preg_match('/Bearer\s(\S+)/', $headers['Authorization'], $matches)) {
-            $token = $matches[1];
-        }
-    }
-    
-    if (!$token) {
+
+    if (!isset($headers['Authorization'])) {
         http_response_code(401);
-        echo json_encode(['error' => 'Authentication required']);
+        echo json_encode([
+            "success" => false,
+            "error" => "No authorization token provided"
+        ]);
         exit();
     }
-    
-    $payload = JWT::decode($token);
-    if (!$payload) {
+
+    $auth_header = $headers['Authorization'];
+    $token = str_replace('Bearer ', '', $auth_header);
+
+    $decoded = JWT::decode($token);
+
+    if (!$decoded) {
         http_response_code(401);
-        echo json_encode(['error' => 'Invalid token']);
+        echo json_encode([
+            "success" => false,
+            "error" => "Invalid or expired token"
+        ]);
         exit();
     }
-    
-    return $payload;
+
+    // Check if token is expired
+    if (isset($decoded['exp']) && $decoded['exp'] < time()) {
+        http_response_code(401);
+        echo json_encode([
+            "success" => false,
+            "error" => "Token has expired"
+        ]);
+        exit();
+    }
+
+    return $decoded;
 }
 ?>

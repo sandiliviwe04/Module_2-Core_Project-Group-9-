@@ -1,5 +1,18 @@
-CREATE DATABASE IF NOT EXISTS morderntech_hr;
+CREATE DATABASE IF NOT EXISTS moderntech_hr;
 USE moderntech_hr;
+
+-- Users table for authentication
+CREATE TABLE users(
+user_id INT PRIMARY KEY AUTO_INCREMENT,
+username VARCHAR(50) UNIQUE NOT NULL,
+password_hash VARCHAR(255) NOT NULL,
+email VARCHAR(100) UNIQUE NOT NULL,
+role ENUM('admin', 'hr', 'employee') DEFAULT 'employee',
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+last_login DATETIME NULL,
+INDEX idx_username (username),
+INDEX idx_email (email)
+) ENGINE=InnoDB;
 
 CREATE TABLE employees(
 employee_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -8,25 +21,31 @@ position VARCHAR(100),
 department VARCHAR(50),
 salary DECIMAL(10,2),
 employment_history TEXT,
-contact VARCHAR(100)
-);
+contact VARCHAR(100),
+INDEX idx_department (department),
+INDEX idx_name (name)
+) ENGINE=InnoDB;
 
 CREATE TABLE attendance(
 id INT AUTO_INCREMENT PRIMARY KEY,
 employee_id INT,
 date DATE,
 status ENUM('Present', 'Absent'),
-FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
-);
+FOREIGN KEY (employee_id) REFERENCES employees(employee_id) ON DELETE CASCADE,
+INDEX idx_employee_date (employee_id, date),
+INDEX idx_date (date)
+) ENGINE=InnoDB;
 
 CREATE TABLE leave_requests(
 id INT AUTO_INCREMENT PRIMARY KEY,
 employee_id INT,
 date DATE,
 reason VARCHAR(255),
-status ENUM('Approved', 'Denied', 'Pending'),
-FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
-);
+status ENUM('Approved', 'Denied', 'Pending') DEFAULT 'Pending',
+FOREIGN KEY (employee_id) REFERENCES employees(employee_id) ON DELETE CASCADE,
+INDEX idx_employee (employee_id),
+INDEX idx_status (status)
+) ENGINE=InnoDB;
 
 CREATE TABLE payroll(
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,24 +53,17 @@ employee_id INT,
 hours_worked DECIMAL(5,2),
 leave_deductions INT,
 final_salary DECIMAL(10,2),
-FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
-);
-
-CREATE TABLE payroll(
-id INT AUTO_INCREMENT PRIMARY KEY,
-employee_id INT,
-hours_worked DECIMAL(5,2),
-leave_deductions INT,
-final_salary DECIMAL(10,2),
-FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
-);
+FOREIGN KEY (employee_id) REFERENCES employees(employee_id) ON DELETE CASCADE,
+INDEX idx_employee (employee_id)
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS employee_reviews(
 review_id INT AUTO_INCREMENT PRIMARY KEY,
 employee_id INT NOT NULL,
-review_text TEXT NOT NUll,
+review_text TEXT NOT NULL,
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+FOREIGN KEY (employee_id) REFERENCES employees(employee_id) ON DELETE CASCADE,
+INDEX idx_employee (employee_id)
 ) ENGINE=InnoDB;
 
  INSERT INTO employees (employee_id, name, position, department, salary, employment_history, contact)  VALUES
@@ -93,3 +105,7 @@ INSERT INTO leave_requests (employee_id, date, reason, status) VALUES
 INSERT INTO payroll (employee_id, hours_worked, leave_deductions, final_salary) VALUES
 (1, 169, 8, 76500), (2, 175, 10, 30000), (3, 190, 4, 56800), (4, 135, 6, 99700), (5, 188, 5, 88850),
 (6, 168, 2, 88800), (7, 165, 3, 91800), (8, 156, 0, 54000), (9, 155, 5, 61500), (10, 172, 4, 77750);
+
+-- Insert default admin user (password: password123)
+INSERT INTO users (username, password_hash, email, role) VALUES
+('Admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@moderntech.com', 'admin');

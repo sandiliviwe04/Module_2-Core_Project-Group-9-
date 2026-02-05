@@ -1,10 +1,9 @@
 <?php
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+require_once __DIR__ . '/cors.php';
 
-class Database {
+
+class Database
+{
     private $host = "localhost";
     private $db_name = "moderntech_hr";
     private $username = "root";
@@ -17,17 +16,18 @@ class Database {
         PDO::ATTR_EMULATE_PREPARES => false,
     ];
 
-    public function getConnection() {
+    public function getConnection()
+    {
         $this->conn = null;
         try {
             $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
+                "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name,
                 $this->username,
                 $this->password
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->exec("set names utf8");
-        } catch(PDOException $exception) {
+        } catch (PDOException $exception) {
             echo json_encode([
                 "error" => true,
                 "message" => "Database connection failed: " . $exception->getMessage()
