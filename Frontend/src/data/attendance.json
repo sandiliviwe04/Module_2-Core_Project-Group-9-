@@ -1,0 +1,28 @@
+{
+  "attendance": [
+    {
+      "id": 1,
+      "employeeId": 1,
+      "date": "2024-01-15",
+      "status": "present",
+      "checkIn": "09:00",
+      "checkOut": "17:30"
+    },
+    {
+      "id": 2,
+      "employeeId": 2,
+      "date": "2024-01-15",
+      "status": "present",
+      "checkIn": "09:15",
+      "checkOut": "17:45"
+    },
+    {
+      "id": 3,
+      "employeeId": 3,
+      "date": "2024-01-15",
+      "status": "absent",
+      "checkIn": null,
+      "checkOut": null
+    }
+  ]
+}

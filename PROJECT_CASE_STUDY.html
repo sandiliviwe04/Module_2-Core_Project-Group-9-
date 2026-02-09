@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModernTech HR - Case Study</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text-dark: #1e293b;
+            --text-light: #475569;
+            --border: #e2e8f0;
+            --bg-page: #ffffff;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .content {
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            a {
+                text-decoration: none !important;
+                color: black !important;
+            }
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f8fafc;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .content {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .no-print-container {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            text-align: right;
+        }
+
+        .print-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s;
+        }
+
+        .print-btn:hover {
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 2.5rem;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dark);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            color: #334155;
+        }
+
+        .header-info {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+
+        .header-item {
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header-item span {
+            font-weight: 400;
+            color: var(--text-light);
+            margin-left: 10px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        strong {
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print-container no-print">
+        <button onclick="window.print()" class="print-btn">Save as PDF / Print</button>
+    </div>
+
+    <article class="content">
+        <h1>CASE STUDY</h1>
+
+        <div class="header-info">
+            <div class="header-item">Full Name: <span>[Your Name Here]</span></div>
+            <div class="header-item">Project: <span>ModernTech HR Management System</span></div>
+            <div class="header-item">Youth Force Cohort: <span>[Your Cohort Here]</span></div>
+            <div class="header-item">Module/Brief: <span>Module 2 Core Project</span></div>
+        </div>
+
+        <section>
+            <h2>🏗️ Understanding the Project Brief</h2>
+
+            <h3>In your own words, explain the project brief:</h3>
+            <p>The project required the development of a professional, fully integrated Human Resources Management
+                System. The core mission was to build a secure PHP-based RESTful API that handles essential business
+                logic (Employees, Payroll, Attendance, and Leave) and seamlessly synchronize it with a modern Vue.js
+                frontend for a dynamic user experience.</p>
+
+            <h3>What was the primary objective?</h3>
+            <p>The primary objective was to transition a mock, file-based frontend into a production-ready,
+                database-driven full-stack application. This meant moving away from static JSON files and hardcoded
+                logic toward a secure, scalable system with real-time data persistence and authentication.</p>
+
+            <h3>Core requirements:</h3>
+            <ul>
+                <li><strong>Secure Authentication:</strong> Implementing JWT tokens and bcrypt password hashing for user
+                    protection.</li>
+                <li><strong>Relational Database:</strong> Designing a normalized MySQL database schema with proper
+                    relationships.</li>
+                <li><strong>RESTful API:</strong> Building complete CRUD endpoints for Employees, Payroll, Attendance,
+                    and Leave.</li>
+                <li><strong>Frontend Integration:</strong> Connecting the Vue.js interface to the API using Pinia and
+                    Axios.</li>
+                <li><strong>Security & Validation:</strong> Ensuring all data is validated on the server and protected
+                    against SQL injection.</li>
+            </ul>
+
+            <h3>Developer Role:</h3>
+            <p>I acted as the Lead Full-Stack Developer, managing the end-to-end technical lifecycle of the project—from
+                database normalization and backend API design to frontend state management and deployment.</p>
+        </section>
+
+        <section>
+            <h2>🛠️ The Process</h2>
+
+            <h3>Project Planning:</h3>
+            <p>My planning phase focused on auditing the existing infrastructure. I identified critical naming
+                inconsistencies in the database and planned a modular API structure. I used a step-by-step
+                implementation plan to ensure that security (Authentication) was established before building out the
+                feature-rich HR modules.</p>
+
+            <h3>Implementation Strategies:</h3>
+            <p>I chose a modular backend architecture to keep the code maintainable and extensible. On the frontend, I
+                migrated the state management to Pinia to ensure high performance and clean data flow. This strategy
+                allowed me to build, test, and integrate each module independently before final consolidation.</p>
+
+            <h3>Technologies Used:</h3>
+            <p><strong>Backend:</strong> PHP 7.4+, MySQL | <strong>Frontend:</strong> Vue.js 3, Pinia, Axios, Vite |
+                <strong>Security:</strong> JWT, bcrypt hashing, PDO Prepared Statements</p>
+
+            <h3>Challenges and Debugging:</h3>
+            <p>One of the main challenges was resolving CORS conflicts between the PHP backend and the Vite dev server.
+                I debugged this by creating a centralized CORS configuration file. I also fixed critical schema errors
+                in the original SQL file to ensure data integrity.</p>
+
+            <h3>Successes and Achievements:</h3>
+            <p>I achieved 100% full-stack integration across all modules. Seeing the login screen transition into a live
+                dashboard filled with live database data was a major success. Additionally, I successfully deployed the
+                entire project to GitHub with professional documentation.</p>
+        </section>
+
+        <section>
+            <h2>🚀 Project Showcase</h2>
+
+            <h3>Solution Impact:</h3>
+            <p>The ModernTech HR system provides a secure and automated alternative to manual record-keeping. It
+                eliminates data silos, ensures that payroll calculations are consistent, and provides management with a
+                real-time overview of HR metrics—directly impacting organisational efficiency.</p>
+
+            <h3>Visual showcase:</h3>
+            <p><strong>GitHub Repository:</strong> <a
+                    href="https://github.com/sandiliviwe04/Module_2-Core_Project-Group-9-"
+                    target="_blank">https://github.com/sandiliviwe04/Module_2-Core_Project-Group-9-</a></p>
+
+            <h3>Personal Reflection:</h3>
+            <p>This project was a transformative experience. It taught me how to bridge the gap between complex
+                server-side logic and interactive client-side interfaces. I gained a deep appreciation for application
+                security and the importance of thorough documentation, which are essential to professional development.
+            </p>
+        </section>
+
+        <div class="footer">
+            Built with ❤️ by Group 9
+        </div>
+    </article>
+
+    <script>
+        // Auto-print prompt when opened directly for convenience
+        // window.onload = () => { setTimeout(() => window.print(), 500); };
+    </script>
+</body>
+
+</html>
